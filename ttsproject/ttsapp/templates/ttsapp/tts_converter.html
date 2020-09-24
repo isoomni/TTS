@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS Service</title>
+</head>
+<body>
+    {% if body %}
+        {{ body }}
+    {% else %}
+        <h2>전달 받은 텍스트가 없습니다.</h2>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,175 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EP - Easy Presentation</title>
+    <!-- favicon -->
+    <link rel="icon" href="{% static 'ttsapp/favicon.png' %}" />
+    <!-- fontawesome icon -->
+    <script src="https://kit.fontawesome.com/73b133f9f0.js" crossorigin="anonymous"></script>
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+    {% comment %} pdf viewer {% endcomment %}
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'ttsapp/style.css' %}" type="text/css" />
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="nav__container section__container">
+            <div class="intro">
+                <img src="{% static 'ttsapp/logo.png' %}" alt="" class="intro__img">
+                <div class="intro__text">EP</div>
+            </div>
+            <ul class="menu">
+                <li>Home</li>
+                <li>Audio AI</li>
+                <li>Record</li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home -->
+    <section id="home">
+        <div class="home__container section__container">
+            <div class="home__left">
+                <div class="home__title">
+                    <span class="hilight">E</span>asy
+                    <span class="hilight">P</span>resentaion
+                </div>
+                Don't Speech <br>
+                <span class="present">
+                    Just Present!
+                </span>
+            </div>
+            <div class="home_right">
+                <div class="home__img">
+                    <img src="{% static 'ttsapp/intro-img.svg' %}" alt="" class="img__people">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audio AI -->
+    <section id="audio" class="section">
+        <div class="audio__container section__container">
+            <div class="title">
+                <h1>Audio</h1>
+                <span>영상 대본을 음성으로 바꾸기</span>
+            </div>
+            <div class="audio__content">
+                <div class="audio__left">
+                    <form action="{% url 'tts_converter' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="left__left">
+                            <div class="audio__text">
+                                <div class="text__direction">영상 대본을 입력하세요</div>
+                                {% if body %}
+                                <textarea cols=50 rows=30 id='body' name='body'>{{ body }}</textarea>
+                                {% else %}
+                                <textarea cols=50 rows=30 id='body' name='body'></textarea>
+                                {% comment %} <div id="text_area" contentEditable="true">
+                                    텍스트 입력하는 공간입니다~~
+                                    <img src="{% static 'ttsapp/img_btn.PNG' %}" />
+                                </div> {% endcomment %}
+                                {% endif %}
+                            </div>
+                            <div class="left__button">
+                                <button class="btn btn-outline-primary" type='submit'>음성화</button>
+                                <button class="btn btn-outline-primary" type='submit' id="initiate"><a href="{% url 'main' %}">초기화</a></button>
+                            </div>
+                        </div>
+                        <div class="audio__button">
+                            <button class="btn btn-outline-primary" type="button" id='btn_delay'>1초 멈춤</button>
+                            <button class="btn btn-outline-primary" type="button" id='btn_strong'>강조</button>
+                            <button class="btn btn-outline-primary" type="button" id='btn_slow'>느리게</button>
+                            <button class="btn btn-outline-primary" type="button" id='btn_cardinal'>기수로 읽기</button>
+                            <button class="btn btn-outline-primary" type="button" id='btn_ordinal'>서수로 읽기</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="audio__right">
+                    <div class="box">
+                        <h2>1. 영상 대본을 입력하세요.</h2>
+                    </div>
+                    <div class="box">
+                        <h2>2. 버튼을 활용해, 음성화 세부사항을 조절하세요.</h2>
+                        ▶ 1초 멈춤 = 원하는 위치의 음성을 1초 늦춤<br>
+                        ▶ 강조 : Drag한 Text의 음성을 강조<br>
+                        ▶ 느리게 : Drag한 Text의 음성을 느리게<br>
+                        ▶ 기수 : Drag한 숫자를 기수로 읽기 예) 12 = 십이<br>
+                        ▶ 서수 : Drag한 숫자를 서수로 읽기  예) 12 = 열두번째<br>
+                        ▶ 초기화 :  입력창을 새로고침<br>
+                        ▶ 음성화 : 음성화 완료<br>
+                    </div>
+                    <div class="box">
+                        <h2>3. 녹화하기</h2>
+                        ① 녹화 버튼을 누른 후, 음성에 맞춰 pdf 넘겨주세요.<br>
+                        ② 발표가 끝나면, 팝업창을 클릭한 후, ESC를 눌러주세요.<br>
+                        ③ 저장 버튼을 눌러, 발표 영상 제작을 완료해주세요.<br>
+                    </div>                 
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Record -->
+    <section id="record">
+        <div class="record__top">
+            <div class="top-bar">
+                <div class="bar__container section__container">
+                    <div class="top__left">
+                        <div class="inputFile">
+                            <label for="lecturePdf">영상으로 만들 pdf를 선택해주세요 :</label>
+                            <input type="file" id="lecturePdf" name="lecturePdf" accept=".pdf">
+                        </div>
+                        <button class="btn" id="prev-page">
+                            <i class="fas fa-arrow-circle-left"></i> Prev Page
+                        </button>
+                        <button class="btn" id="next-page">
+                            Next Page <i class="fas fa-arrow-circle-right"></i>
+                        </button>
+                        <span class="page-info">
+                            Page <span id="page-num"></span> of <span id="page-count"></span>
+                        </span>
+                    </div>
+                    <div class="top__middle">
+                    {% if audio %}
+                    <audio src='../../static/ttsapp/output.mp3' controls class="player"></audio>
+                    {% endif %}
+                    </div>
+                    <div class="top__right">
+                        <form action="{% url 'recode' %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn__bottom btn-outline-primary" type="submit" id='btn_recode'>녹화</button>
+                        </form>
+                        <form action="{% url 'merge' %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn__bottom btn-outline-primary" type="submit" id='btn_merge'>저장</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- PDF Viewer -->
+            <div class="pdf">
+                <canvas id="pdf-render"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script -->
+    <script type="text/javascript" src="../../static/ttsapp/insert_delay.js?ver=1"></script>
+    {% comment %} pdf viewer {% endcomment %}
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script src="{% static 'ttsapp/pdf_viewer.js' %}"></script>
+    {% comment %} <script src="js/file.js"></script> {% endcomment %}
+</body>
+
+</html>
